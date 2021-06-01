@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/board")
 public class BoardController {
 
@@ -18,34 +16,46 @@ public class BoardController {
     BoardService boardService;
 
     @GetMapping
-    public List<BoardDto> BoardList() {
-        return boardService.getBoardList();
+    public String BoardList(Model model) {
+        List<BoardDto> list = boardService.getBoardList();
+        model.addAttribute("list",list);
+        return "list";
     }
 
     @GetMapping("/{boardSeq}")
-    public BoardDto Board(@PathVariable("boardSeq") int seq){
-        return boardService.getBoard(seq);
+    public String Board(@PathVariable("boardSeq") int num, Model model){
+        BoardDto board = boardService.getBoard(num);
+        model.addAttribute("board",board);
+        return "boardDetail";
+    }
+    @GetMapping("/add")
+    public String addForm(){
+        return "newBoard";
     }
 
     @PostMapping
     public String insertBoard(BoardDto boardDto){
         boardService.insertBoard(boardDto);
-        return "추가OK";
+        return "redirect:/board";
+    }
+
+    @GetMapping("/update/{boardSeq}")
+    public String updateForm(@PathVariable("boardSeq") int seq, Model model){
+        BoardDto board = boardService.getBoard(seq);
+        model.addAttribute("board",board);
+        return "updateBoard";
     }
 
     @PutMapping("/{boardSeq}")
-    public String update(@PathVariable("boardSeq") int seq, BoardDto boardDto){
-        boardDto.setSeq(seq);
+    public String update(@PathVariable("boardSeq") int seq, @ModelAttribute("form") BoardDto boardDto){
         boardService.updateBoard(boardDto);
-        System.out.println(boardDto.toString());
-        return "수정OK";
+        return "redirect:/board";
     }
 
     @DeleteMapping("/{boardSeq}")
     public String deleteBoard(@PathVariable("boardSeq") int seq){
         boardService.deleteBoard(seq);
-        return "삭제OK";
+        return "redirect:/board";
     }
-
 
 }
