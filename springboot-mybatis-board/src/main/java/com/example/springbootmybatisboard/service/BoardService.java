@@ -10,4 +10,5 @@ public interface BoardService {
     void insertBoard(BoardDto boardDto);
     void updateBoard(BoardDto boardDto);
     void deleteBoard(int seq);
+    void updateReads(int seq);
 }

@@ -29,6 +29,15 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateReads"
+            parameterType="Integer"
+            useGeneratedKeys="true"
+            keyProperty="seq">
+        UPDATE board
+        SET `reads` = `reads`+1
+        WHERE `seq` = #{seq}
+    </update>
+
     <delete id="deleteBoard"
             parameterType="Integer">
         DELETE

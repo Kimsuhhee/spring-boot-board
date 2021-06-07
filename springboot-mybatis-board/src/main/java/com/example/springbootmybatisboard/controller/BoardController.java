@@ -24,6 +24,7 @@ public class BoardController {
 
     @GetMapping("/{boardSeq}")
     public String Board(@PathVariable("boardSeq") int num, Model model){
+        boardService.updateReads(num);
         BoardDto board = boardService.getBoard(num);
         model.addAttribute("board",board);
         return "boardDetail";

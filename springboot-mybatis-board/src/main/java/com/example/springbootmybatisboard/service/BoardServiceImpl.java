@@ -39,5 +39,10 @@ public class BoardServiceImpl implements BoardService{
         boardMapper.deleteBoard(seq);
     }
 
+    @Override
+    public void updateReads(int seq) {
+        boardMapper.updateReads(seq);
+    }
+
 }
 
